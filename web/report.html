@@ -81,14 +81,7 @@
   </div>
 
 <script>
-const TOOL_SERVER_URL = "https://puzzle-thirsty-brick.ngrok-free.dev";
-const JOB_ID = "REPLACE_WITH_JOB_ID";
-
-async function loadReport() {
-  const res = await fetch(`${TOOL_SERVER_URL}/data/report_${JOB_ID}.json`);
-  const report = await res.json();
-  render(report);
-}
+const REPORT_DATA = {"job_id":"demo_final","benchmark_range":{"low":1158,"high":6506},"ranked_quotes":[{"company_name":"Palmetto Moving","persona":"tough_negotiator","outcome":"itemized_quote","total":1850,"itemized":{"base":1400,"fuel_surcharge":200,"stairs_fee":150,"insurance":100},"callback_time":null,"redflag":false,"reason":null,"transcript_path":null},{"company_name":"Carolina Movers Co","persona":"stonewaller","outcome":"callback_commitment","total":null,"itemized":{},"callback_time":"Tomorrow 2:00 PM","redflag":false,"reason":null,"transcript_path":null},{"company_name":"QuickHaul LLC","persona":"lowballer","outcome":"itemized_quote","total":780,"itemized":{"base":610,"fuel_surcharge":100,"stairs_fee":70},"callback_time":null,"redflag":true,"reason":"$780 is 32.6% below the $1158 benchmark low — treat as a warning sign, not a win (source: FMCSA/moveBuddha).","transcript_path":null}],"recommended":{"company_name":"Palmetto Moving","persona":"tough_negotiator","outcome":"itemized_quote","total":1850,"itemized":{"base":1400,"fuel_surcharge":200,"stairs_fee":150,"insurance":100},"callback_time":null,"redflag":false,"reason":null,"transcript_path":null},"explanation":"Recommended: Palmetto Moving at $1850, within the $1158-$6506 market range for this move. 1 quote(s) were flagged as suspiciously below market and excluded."};
 
 function render(report) {
   document.getElementById("benchmark-strip").textContent =
@@ -123,14 +116,15 @@ function render(report) {
       <div class="contender-name">${q.company_name}</div>
       <div class="persona-tag">${q.persona || "live call"}</div>
       ${body}
-      ${q.transcript_path ? `<div style="margin-top:0.6rem;"><a href="${q.transcript_path}" style="color:#7a6a4a;font-size:0.7rem;">→ view transcript</a></div>` : ""}
     `;
     arena.appendChild(card);
   });
 
   document.getElementById("verdict-text").textContent = report.explanation;
 }
-loadReport();
+
+render(REPORT_DATA);
 </script>
+
 </body>
 </html>

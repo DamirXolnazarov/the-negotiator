@@ -73,18 +73,9 @@
   </div>
 
 <script>
-const TOOL_SERVER_URL = "https://puzzle-thirsty-brick.ngrok-free.dev";
-let renderedClaimKeys = new Set();
-let wavePoints = [];
+const CLAIMS_DATA = {"claims":[{"job_id":"demo_final","company_name":"Palmetto Moving","claim":"third-floor walkup, no elevator","source_field":"destination.stairs","verified":true,"logged_at":"2026-07-19T13:10:16Z"},{"job_id":"demo_final","company_name":"Palmetto Moving","claim":"moving from Rock Hill to Charlotte, 45 miles","source_field":"distance_miles","verified":true,"logged_at":"2026-07-19T13:10:17Z"},{"job_id":"demo_final","company_name":"Palmetto Moving","claim":"queen bed, sofa, two dressers, washer and dryer","source_field":"large_items","verified":true,"logged_at":"2026-07-19T13:10:18Z"},{"job_id":"demo_final","company_name":"QuickHaul LLC","claim":"2 bedroom apartment, standard items","source_field":"home_size","verified":true,"logged_at":"2026-07-19T13:10:19Z"},{"job_id":"demo_final","company_name":"Carolina Movers Co","claim":"moving August 8th, flexible on date","source_field":"move_date","verified":true,"logged_at":"2026-07-19T13:10:20Z"}]};
 
-async function poll() {
-  try {
-    const res = await fetch(`${TOOL_SERVER_URL}/tools/all_claims`);
-    const data = await res.json();
-    render(data.claims || []);
-  } catch (e) { console.error("poll failed", e); }
-  setTimeout(poll, 2000);
-}
+let wavePoints = [];
 
 function render(claims) {
   const total = claims.length;
@@ -107,10 +98,6 @@ function render(claims) {
 
   const feed = document.getElementById("claim-feed");
   claims.forEach(c => {
-    const key = `${c.company_name}_${c.claim}_${c.logged_at}`;
-    if (renderedClaimKeys.has(key)) return;
-    renderedClaimKeys.add(key);
-
     const row = document.createElement("div");
     row.className = "claim-row";
     row.innerHTML = `
@@ -133,7 +120,9 @@ function drawWave() {
   const line = pts.map((y, i) => `${i * step},${y}`).join(" ");
   document.getElementById("wave-line").setAttribute("points", line);
 }
-poll();
+
+render(CLAIMS_DATA.claims);
 </script>
+
 </body>
 </html>

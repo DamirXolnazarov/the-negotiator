@@ -64,16 +64,7 @@
   <div id="ticker-grid"></div>
 
 <script>
-const TOOL_SERVER_URL = "https://puzzle-thirsty-brick.ngrok-free.dev";
-
-async function poll() {
-  try {
-    const res = await fetch(`${TOOL_SERVER_URL}/tools/all_price_movements`);
-    const data = await res.json();
-    render(data.movements);
-  } catch (e) { console.error("poll failed", e); }
-  setTimeout(poll, 2000);
-}
+const MOVEMENTS_DATA = {"movements":[{"file":"demo_final_Palmetto_Moving_movement","points":[{"job_id":"demo_final","company_name":"Palmetto Moving","stage":"initial_quote","amount":2400,"note":""},{"job_id":"demo_final","company_name":"Palmetto Moving","stage":"post_leverage_quote","amount":1850,"note":"Mentioned competing $1,900 quote from another company"}]},{"file":"demo_final_QuickHaul_LLC_movement","points":[{"job_id":"demo_final","company_name":"QuickHaul LLC","stage":"initial_quote","amount":780,"note":""}]}]};
 
 function render(movements) {
   const grid = document.getElementById("ticker-grid");
@@ -111,7 +102,9 @@ function render(movements) {
     grid.appendChild(card);
   });
 }
-poll();
+
+render(MOVEMENTS_DATA.movements);
 </script>
+
 </body>
 </html>

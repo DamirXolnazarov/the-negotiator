@@ -1,6 +1,9 @@
 .env
-data/
+venv/
 __pycache__/
 *.pyc
-.venv/
 *.egg-info/
+data/*
+!data/price_movements_snapshot.json
+!data/claims_snapshot.json
+!data/report_demo_final.json

@@ -2,129 +2,331 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>The Negotiator — AI Voice Agent That Negotiates For You</title>
+<title>The Negotiator — AI That Actually Fights For You</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
   :root {
-    --bg: #05070a; --card: #0f1420; --border: #1f2937;
-    --green: #22c55e; --gold: #d4af37; --text: #e6edf3; --muted: #8a94a3;
+    --bg: #050608; --card: #0e1219; --card2: #131926; --border: #1e2632;
+    --green: #22c55e; --green-glow: #34d97a; --gold: #d4af37; --red: #ef4444;
+    --text: #eef2f6; --muted: #7d8896; --cyan: #22d3ee;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
-    background: radial-gradient(ellipse at top, #0a0e17 0%, #05070a 100%);
-    color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.65;
+    overflow-x: hidden;
   }
-  .container { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
 
-  .hero { text-align: center; padding: 6rem 2rem 4rem; }
-  .hero .badge {
-    display: inline-block; padding: 0.4rem 1rem; border: 1px solid var(--green);
-    border-radius: 999px; color: var(--green); font-size: 0.8rem; margin-bottom: 1.5rem;
+  /* ---------- background texture ---------- */
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: -1;
+    background:
+      radial-gradient(ellipse 800px 500px at 20% 0%, rgba(34,197,94,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 85% 15%, rgba(34,211,238,0.08), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 50% 100%, rgba(212,175,55,0.06), transparent 60%);
+  }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(12px);
+    background: rgba(5,6,8,0.7);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+  }
+  nav .container { display: flex; justify-content: space-between; align-items: center; }
+  nav .logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.05em; }
+  nav .logo span { color: var(--green); }
+  nav .links { display: flex; gap: 1.8rem; align-items: center; }
+  nav .links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  nav .links a:hover { color: var(--text); }
+  nav .links a.cta { color: var(--bg); background: var(--green); padding: 0.5rem 1.1rem; border-radius: 7px; font-weight: 600; }
+
+  /* ---------- hero ---------- */
+  .hero { text-align: center; padding: 6rem 2rem 3rem; position: relative; }
+  .hero .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 1rem; border: 1px solid rgba(34,197,94,0.3); border-radius: 999px;
+    color: var(--green); font-size: 0.8rem; margin-bottom: 2rem;
+    background: rgba(34,197,94,0.06);
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+    animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
+    50% { opacity: 0.5; box-shadow: 0 0 0 6px rgba(34,197,94,0); }
   }
   .hero h1 {
-    font-family: 'Bebas Neue', sans-serif; font-size: 4.5rem; letter-spacing: 0.02em;
-    background: linear-gradient(90deg, #22c55e, #06b6d4);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 9vw, 6rem);
+    letter-spacing: 0.01em; line-height: 0.95;
+    background: linear-gradient(120deg, #fff 30%, var(--green) 65%, var(--cyan) 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    line-height: 1;
   }
-  .hero p.sub { color: var(--muted); font-size: 1.2rem; max-width: 600px; margin: 1.5rem auto; }
-  .cta-row { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+  .hero p.sub {
+    color: var(--muted); font-size: 1.25rem; max-width: 620px; margin: 1.8rem auto 0;
+    font-weight: 400;
+  }
+  .hero p.sub strong { color: var(--text); font-weight: 600; }
+  .cta-row { display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap; }
   .btn {
-    padding: 0.9rem 1.8rem; border-radius: 8px; text-decoration: none; font-weight: 600;
-    font-size: 0.95rem; transition: transform 0.2s ease;
+    padding: 1rem 1.9rem; border-radius: 10px; text-decoration: none; font-weight: 600;
+    font-size: 0.95rem; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.5rem;
   }
-  .btn:hover { transform: translateY(-2px); }
-  .btn-primary { background: var(--green); color: #05070a; }
-  .btn-secondary { border: 1px solid var(--border); color: var(--text); }
+  .btn-primary { background: var(--green); color: #05070a; box-shadow: 0 8px 24px rgba(34,197,94,0.25); }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(34,197,94,0.35); }
+  .btn-secondary { border: 1px solid var(--border); color: var(--text); background: rgba(255,255,255,0.02); }
+  .btn-secondary:hover { border-color: var(--muted); transform: translateY(-3px); }
 
+  /* ---------- live preview mock ---------- */
+  .preview-mock {
+    max-width: 680px; margin: 4rem auto 0;
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  .preview-mock .bar {
+    display: flex; gap: 0.4rem; padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--border);
+  }
+  .preview-mock .bar span { width: 10px; height: 10px; border-radius: 50%; background: #2a3341; }
+  .preview-body { padding: 1.8rem; text-align: left; }
+  .preview-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.9rem 0; border-bottom: 1px solid var(--border); font-family: 'JetBrains Mono', monospace;
+  }
+  .preview-row:last-child { border: none; }
+  .preview-row .co { color: var(--muted); font-size: 0.85rem; }
+  .preview-row .price-old { color: var(--muted); text-decoration: line-through; margin-right: 0.6rem; font-size: 0.9rem; }
+  .preview-row .price-new { color: var(--green); font-weight: 700; font-size: 1.1rem; }
+  .preview-row .flag { color: var(--red); font-size: 0.75rem; border: 1px solid var(--red); padding: 0.15rem 0.5rem; border-radius: 5px; }
+
+  /* ---------- stat strip ---------- */
   .stat-strip {
-    display: flex; justify-content: center; gap: 3rem; padding: 3rem 2rem;
+    display: flex; justify-content: center; gap: 4rem; padding: 4rem 2rem;
     border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
+    flex-wrap: wrap; margin-top: 5rem;
   }
   .stat { text-align: center; }
-  .stat .num { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--gold); }
-  .stat .label { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat .num {
+    font-family: 'Bebas Neue', sans-serif; font-size: 3rem;
+    background: linear-gradient(120deg, var(--gold), #f5d576);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat .label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.3rem; }
 
-  .section { padding: 5rem 0; }
+  /* ---------- sections ---------- */
+  .section { padding: 6rem 0; }
+  .section-tag {
+    text-align: center; color: var(--green); font-size: 0.8rem; text-transform: uppercase;
+    letter-spacing: 0.15em; font-weight: 600; margin-bottom: 0.8rem;
+  }
   .section h2 {
-    font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 0.03em;
-    margin-bottom: 1rem; text-align: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); letter-spacing: 0.02em;
+    margin-bottom: 1.2rem; text-align: center;
   }
-  .section p.lead { color: var(--muted); text-align: center; max-width: 650px; margin: 0 auto 3rem; }
+  .section p.lead { color: var(--muted); text-align: center; max-width: 680px; margin: 0 auto 3.5rem; font-size: 1.05rem; }
 
-  .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  /* ---------- problem quote block ---------- */
+  .quote-block {
+    background: linear-gradient(135deg, var(--card2), var(--card));
+    border: 1px solid var(--border); border-radius: 20px; padding: 3rem;
+    max-width: 780px; margin: 0 auto; position: relative;
+  }
+  .quote-block .spread {
+    font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; text-align: center;
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .quote-block .spread span { color: var(--red); }
+  .quote-block p { color: var(--muted); text-align: center; }
+
+  /* ---------- modules ---------- */
+  .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.6rem; }
   .module-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.8rem;
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem;
+    transition: all 0.3s ease; position: relative; overflow: hidden;
   }
-  .module-card .num { color: var(--green); font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; }
-  .module-card h3 { font-size: 1.2rem; margin: 0.5rem 0; }
-  .module-card p { color: var(--muted); font-size: 0.9rem; }
+  .module-card:hover { border-color: var(--green); transform: translateY(-4px); }
+  .module-card::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--cyan));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+  }
+  .module-card:hover::before { transform: scaleX(1); }
+  .module-card .num {
+    color: var(--green); font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem;
+    display: inline-block; margin-bottom: 0.8rem;
+  }
+  .module-card h3 { font-size: 1.25rem; margin-bottom: 0.6rem; }
+  .module-card p { color: var(--muted); font-size: 0.92rem; }
 
+  /* ---------- differentiators ---------- */
+  .diff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+  .diff-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.6rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .diff-card .icon { font-size: 1.6rem; }
+  .diff-card h4 { font-size: 1rem; margin-bottom: 0.3rem; }
+  .diff-card p { color: var(--muted); font-size: 0.85rem; }
+
+  /* ---------- proof links ---------- */
   .proof-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
   .proof-links a {
-    padding: 0.7rem 1.4rem; border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text); text-decoration: none; font-size: 0.9rem;
+    padding: 0.9rem 1.6rem; border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); text-decoration: none; font-size: 0.9rem; font-weight: 500;
+    background: var(--card); transition: all 0.2s ease;
   }
-  .proof-links a:hover { border-color: var(--green); color: var(--green); }
+  .proof-links a:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
 
-  footer { text-align: center; padding: 3rem 2rem; color: var(--muted); font-size: 0.85rem; }
+  /* ---------- stack ---------- */
+  .stack-row {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; margin-top: 2rem;
+  }
+  .stack-pill {
+    padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 999px;
+    font-size: 0.82rem; color: var(--muted); font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    text-align: center; padding: 4rem 2rem 3rem; color: var(--muted); font-size: 0.85rem;
+    border-top: 1px solid var(--border); margin-top: 4rem;
+  }
+  footer .foot-links { margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--green); }
+
+  @media (max-width: 640px) {
+    nav .links a:not(.cta) { display: none; }
+    .stat-strip { gap: 2rem; }
+  }
 </style>
 </head>
 <body>
 
+  <nav>
+    <div class="container">
+      <div class="logo">THE <span>NEGOTIATOR</span></div>
+      <div class="links">
+        <a href="#problem">Problem</a>
+        <a href="#how">How It Works</a>
+        <a href="#proof">Proof</a>
+        <a href="https://github.com/DamirXolnazarov/the-negotiator" class="cta">View Code</a>
+      </div>
+    </div>
+  </nav>
+
   <section class="hero">
-    <div class="badge">Hack-Nation × ElevenLabs · The Negotiator Challenge</div>
-    <h1>THE NEGOTIATOR</h1>
-    <p class="sub">A voice agent that calls the market, negotiates with real leverage, and hands you a decision you can trust — evidence cited, nothing invented.</p>
+    <div class="eyebrow"><span class="dot"></span>Hack-Nation × ElevenLabs — The Negotiator Challenge</div>
+    <h1>AI THAT ACTUALLY<br>FIGHTS FOR YOU</h1>
+    <p class="sub">A voice agent that calls the market, uses <strong>real leverage</strong> to move prices live, and hands you a decision backed by evidence — not vibes.</p>
     <div class="cta-row">
-      <a href="https://damirxolnazarov.github.io/the-negotiator/web/report.html" class="btn btn-primary">See The Verdict →</a>
-      <a href="https://github.com/DamirXolnazarov/the-negotiator" class="btn btn-secondary">View Code</a>
+      <a href="https://damirxolnazarov.github.io/the-negotiator/web/report.html" class="btn btn-primary">⚖ See The Verdict</a>
+      <a href="https://github.com/DamirXolnazarov/the-negotiator" class="btn btn-secondary">View Code →</a>
+    </div>
+
+    <div class="preview-mock">
+      <div class="bar"><span></span><span></span><span></span></div>
+      <div class="preview-body">
+        <div class="preview-row">
+          <span class="co">PALMETTO MOVING</span>
+          <span><span class="price-old">$2,400</span><span class="price-new">$1,850</span></span>
+        </div>
+        <div class="preview-row">
+          <span class="co">QUICKHAUL LLC</span>
+          <span><span class="flag">⚠ 32.6% below market</span></span>
+        </div>
+        <div class="preview-row">
+          <span class="co">CAROLINA MOVERS CO</span>
+          <span style="color:var(--muted); font-size:0.85rem;">📞 Callback scheduled</span>
+        </div>
+      </div>
     </div>
   </section>
 
   <div class="stat-strip">
-    <div class="stat"><div class="num">5.6x</div><div class="label">Price Spread, Same Job</div></div>
-    <div class="stat"><div class="num">40%</div><div class="label">Estimates Blow Up (FMCSA)</div></div>
-    <div class="stat"><div class="num">$20B+</div><div class="label">Moving Industry Alone</div></div>
-    <div class="stat"><div class="num">100%</div><div class="label">Claims Verified, Live</div></div>
+    <div class="stat"><div class="num">5.6×</div><div class="label">Spread, Same Job</div></div>
+    <div class="stat"><div class="num">40%</div><div class="label">Estimates Blow Up</div></div>
+    <div class="stat"><div class="num">$20B+</div><div class="label">Moving Market Alone</div></div>
+    <div class="stat"><div class="num">100%</div><div class="label">Claims Verified Live</div></div>
   </div>
 
   <div class="container">
-    <section class="section">
-      <h2>THE PROBLEM</h2>
+
+    <section class="section" id="problem">
+      <div class="section-tag">The Problem</div>
+      <h2>The Price Was Never The Problem</h2>
       <p class="lead">
-        Real quotes for the exact same 45-mile move ranged from $1,158 to $6,506.
-        Not a data problem — a time problem. Nobody has the hours to call eight
-        companies, compare fine print, and push back on hidden fees. So most people
-        just take the friendliest quote, and hope.
+        Real quotes for the exact same 45-mile move, same apartment, same service —
+        nothing hidden, nothing different. Just whoever answered the phone.
       </p>
+      <div class="quote-block">
+        <div class="spread">$1,158 <span>→</span> $6,506</div>
+        <p>A 5.6× spread for identical work. Not a data problem — a time problem.
+        Nobody has the hours to call eight companies, compare fine print, and
+        push back on hidden fees. So most people take the friendliest quote,
+        and hope. FMCSA data shows that hope is wrong 40% of the time.</p>
+      </div>
     </section>
 
-    <section class="section">
-      <h2>THREE MODULES, ONE LOOP</h2>
+    <section class="section" id="how">
+      <div class="section-tag">How It Works</div>
+      <h2>Three Modules, One Loop</h2>
+      <p class="lead">Sourcing, screening, and negotiation — closed end to end, evidence at every step.</p>
       <div class="modules">
         <div class="module-card">
-          <div class="num">01</div>
-          <h3>The Estimator</h3>
-          <p>A voice interview builds one confirmed job spec — reused word for word on every call, closing the sight-unseen gap that causes most bad estimates.</p>
+          <div class="num">01 — THE ESTIMATOR</div>
+          <h3>Intake by Voice</h3>
+          <p>A voice interview builds one confirmed job spec — origin, destination, stairs, large items — reused word-for-word on every call after. Closes the sight-unseen gap that causes most bad estimates.</p>
         </div>
         <div class="module-card">
-          <div class="num">02</div>
-          <h3>The Caller</h3>
-          <p>Phones the market, describes the job identically every time, and extracts itemized quotes from real negotiation — stonewallers, lowballers, tough negotiators.</p>
+          <div class="num">02 — THE CALLER</div>
+          <h3>Real Negotiation</h3>
+          <p>Phones the market, describes the job identically every time, and extracts itemized quotes across distinct styles — the stonewaller, the lowballer, the tough negotiator.</p>
         </div>
         <div class="module-card">
-          <div class="num">03</div>
-          <h3>The Closer</h3>
+          <div class="num">03 — THE CLOSER</div>
+          <h3>Leverage & Verdict</h3>
           <p>Uses earlier quotes as real leverage mid-call, flags anything suspiciously cheap instead of celebrating it, and reports a ranked, cited recommendation.</p>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <h2>SEE THE PROOF</h2>
+      <div class="section-tag">What Makes This Different</div>
+      <h2>Proof, Not Promises</h2>
+      <p class="lead">Most agents claim they negotiated. Ours shows you, live.</p>
+      <div class="diff-grid">
+        <div class="diff-card">
+          <div class="icon">⚡</div>
+          <div><h4>Live Price Ticker</h4><p>Captures the quote before and after leverage, in the same call, and animates the drop in real time.</p></div>
+        </div>
+        <div class="diff-card">
+          <div class="icon">🔍</div>
+          <div><h4>Honesty Polygraph</h4><p>Every claim the agent makes is checked against the confirmed job spec — a live integrity gauge, not an assertion.</p></div>
+        </div>
+        <div class="diff-card">
+          <div class="icon">🚩</div>
+          <div><h4>Cited Red Flags</h4><p>Suspicious quotes show the exact math and benchmark source — never just a warning icon.</p></div>
+        </div>
+        <div class="diff-card">
+          <div class="icon">⚙️</div>
+          <div><h4>Config, Not Code</h4><p>Swap one YAML file to retarget the entire system to a new market — zero agent code changes.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="proof">
+      <div class="section-tag">See It Live</div>
+      <h2>The Evidence</h2>
       <p class="lead">Not a claim — a live trace of the negotiation, the honesty check, and the final verdict.</p>
       <div class="proof-links">
         <a href="https://damirxolnazarov.github.io/the-negotiator/web/ticker.html">⚡ Live Price Ticker</a>
@@ -132,10 +334,28 @@
         <a href="https://damirxolnazarov.github.io/the-negotiator/web/report.html">⚖ The Verdict</a>
       </div>
     </section>
+
+    <section class="section">
+      <div class="section-tag">Built With</div>
+      <h2>Under The Hood</h2>
+      <div class="stack-row">
+        <span class="stack-pill">ElevenLabs Agents</span>
+        <span class="stack-pill">FastAPI</span>
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">Webhook Tools</span>
+        <span class="stack-pill">YAML Config</span>
+        <span class="stack-pill">Vanilla JS Dashboards</span>
+      </div>
+    </section>
+
   </div>
 
   <footer>
     Built for Hack-Nation × ElevenLabs — "The Negotiator" Challenge · July 2026
+    <div class="foot-links">
+      <a href="https://github.com/DamirXolnazarov/the-negotiator">GitHub</a>
+      <a href="https://damirxolnazarov.github.io/the-negotiator/web/report.html">Live Demo</a>
+    </div>
   </footer>
 
 </body>

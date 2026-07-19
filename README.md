@@ -6,6 +6,14 @@ back a ranked, evidence-cited recommendation.
 
 Built for Hack-Nation × ElevenLabs — "The Negotiator" challenge.
 
+## Demo Data Note
+Due to API quota limits during final testing, the live dashboards render a
+seeded dataset that mirrors the structure of calls we ran successfully
+during development (confirmed via ElevenLabs Agents API + webhook logs —
+see git history / data/job_specs for early real job specs). All backend
+logic — job spec generation, red-flag detection, price-movement tracking,
+honesty verification — is fully functional Python code, not mocked.
+
 ## Quick start
 
 ```bash

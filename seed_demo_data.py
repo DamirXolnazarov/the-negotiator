@@ -38,11 +38,11 @@ log_quote(
 )
 
 print("Logging Company B — the Lowballer (red flag)...")
-log_price_point(JOB_ID, "QuickHaul LLC", "initial_quote", 820, "")
+log_price_point(JOB_ID, "QuickHaul LLC", "initial_quote", 780, "")
 log_quote(
     JOB_ID, "QuickHaul LLC", "itemized_quote",
-    itemized={"base": 650, "fuel_surcharge": 100, "stairs_fee": 70},
-    total=820, persona="lowballer"
+    itemized={"base": 610, "fuel_surcharge": 100, "stairs_fee": 70},
+    total=780, persona="lowballer"
 )
 
 print("Logging Company C — the Tough Negotiator (price moves with leverage)...")

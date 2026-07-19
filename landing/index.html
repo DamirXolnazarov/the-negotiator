@@ -9,7 +9,7 @@
 
   :root {
     --bg: #050608; --card: #0e1219; --card2: #131926; --border: #1e2632;
-    --green: #22c55e; --green-glow: #34d97a; --gold: #d4af37; --red: #ef4444;
+    --green: #22c55e; --gold: #d4af37; --red: #ef4444;
     --text: #eef2f6; --muted: #7d8896; --cyan: #22d3ee;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,7 +23,6 @@
   }
   .container { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
 
-  /* ---------- background texture ---------- */
   body::before {
     content: "";
     position: fixed; inset: 0; z-index: -1;
@@ -33,7 +32,6 @@
       radial-gradient(ellipse 900px 600px at 50% 100%, rgba(212,175,55,0.06), transparent 60%);
   }
 
-  /* ---------- nav ---------- */
   nav {
     position: sticky; top: 0; z-index: 50;
     backdrop-filter: blur(12px);
@@ -49,7 +47,6 @@
   nav .links a:hover { color: var(--text); }
   nav .links a.cta { color: var(--bg); background: var(--green); padding: 0.5rem 1.1rem; border-radius: 7px; font-weight: 600; }
 
-  /* ---------- hero ---------- */
   .hero { text-align: center; padding: 6rem 2rem 3rem; position: relative; }
   .hero .eyebrow {
     display: inline-flex; align-items: center; gap: 0.5rem;
@@ -81,13 +78,13 @@
   .btn {
     padding: 1rem 1.9rem; border-radius: 10px; text-decoration: none; font-weight: 600;
     font-size: 0.95rem; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.5rem;
+    border: none; cursor: pointer;
   }
   .btn-primary { background: var(--green); color: #05070a; box-shadow: 0 8px 24px rgba(34,197,94,0.25); }
   .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(34,197,94,0.35); }
   .btn-secondary { border: 1px solid var(--border); color: var(--text); background: rgba(255,255,255,0.02); }
   .btn-secondary:hover { border-color: var(--muted); transform: translateY(-3px); }
 
-  /* ---------- live preview mock ---------- */
   .preview-mock {
     max-width: 680px; margin: 4rem auto 0;
     background: var(--card); border: 1px solid var(--border); border-radius: 16px;
@@ -108,7 +105,6 @@
   .preview-row .price-new { color: var(--green); font-weight: 700; font-size: 1.1rem; }
   .preview-row .flag { color: var(--red); font-size: 0.75rem; border: 1px solid var(--red); padding: 0.15rem 0.5rem; border-radius: 5px; }
 
-  /* ---------- stat strip ---------- */
   .stat-strip {
     display: flex; justify-content: center; gap: 4rem; padding: 4rem 2rem;
     border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
@@ -122,7 +118,6 @@
   }
   .stat .label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.3rem; }
 
-  /* ---------- sections ---------- */
   .section { padding: 6rem 0; }
   .section-tag {
     text-align: center; color: var(--green); font-size: 0.8rem; text-transform: uppercase;
@@ -134,7 +129,6 @@
   }
   .section p.lead { color: var(--muted); text-align: center; max-width: 680px; margin: 0 auto 3.5rem; font-size: 1.05rem; }
 
-  /* ---------- problem quote block ---------- */
   .quote-block {
     background: linear-gradient(135deg, var(--card2), var(--card));
     border: 1px solid var(--border); border-radius: 20px; padding: 3rem;
@@ -147,7 +141,6 @@
   .quote-block .spread span { color: var(--red); }
   .quote-block p { color: var(--muted); text-align: center; }
 
-  /* ---------- modules ---------- */
   .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.6rem; }
   .module-card {
     background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem;
@@ -167,7 +160,6 @@
   .module-card h3 { font-size: 1.25rem; margin-bottom: 0.6rem; }
   .module-card p { color: var(--muted); font-size: 0.92rem; }
 
-  /* ---------- differentiators ---------- */
   .diff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
   .diff-card {
     background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.6rem;
@@ -177,16 +169,13 @@
   .diff-card h4 { font-size: 1rem; margin-bottom: 0.3rem; }
   .diff-card p { color: var(--muted); font-size: 0.85rem; }
 
-  /* ---------- proof links ---------- */
-  .proof-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
-  .proof-links a {
-    padding: 0.9rem 1.6rem; border: 1px solid var(--border); border-radius: 10px;
-    color: var(--text); text-decoration: none; font-size: 0.9rem; font-weight: 500;
-    background: var(--card); transition: all 0.2s ease;
+  .note-box {
+    max-width: 700px; margin: 3rem auto 0; padding: 1.4rem 1.8rem;
+    border: 1px solid rgba(212,175,55,0.3); background: rgba(212,175,55,0.06);
+    border-radius: 12px; font-size: 0.88rem; color: var(--muted); text-align: center;
   }
-  .proof-links a:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
+  .note-box strong { color: var(--gold); }
 
-  /* ---------- stack ---------- */
   .stack-row {
     display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; margin-top: 2rem;
   }
@@ -195,7 +184,6 @@
     font-size: 0.82rem; color: var(--muted); font-family: 'JetBrains Mono', monospace;
   }
 
-  /* ---------- footer ---------- */
   footer {
     text-align: center; padding: 4rem 2rem 3rem; color: var(--muted); font-size: 0.85rem;
     border-top: 1px solid var(--border); margin-top: 4rem;
@@ -218,7 +206,6 @@
       <div class="links">
         <a href="#problem">Problem</a>
         <a href="#how">How It Works</a>
-        <a href="#proof">Proof</a>
         <a href="https://github.com/DamirXolnazarov/the-negotiator" class="cta">View Code</a>
       </div>
     </div>
@@ -229,8 +216,7 @@
     <h1>AI THAT ACTUALLY<br>FIGHTS FOR YOU</h1>
     <p class="sub">A voice agent that calls the market, uses <strong>real leverage</strong> to move prices live, and hands you a decision backed by evidence — not vibes.</p>
     <div class="cta-row">
-      <a href="https://damirxolnazarov.github.io/the-negotiator/web/report.html" class="btn btn-primary">⚖ See The Verdict</a>
-      <a href="https://github.com/DamirXolnazarov/the-negotiator" class="btn btn-secondary">View Code →</a>
+      <a href="https://github.com/DamirXolnazarov/the-negotiator" class="btn btn-primary">View The Code →</a>
     </div>
 
     <div class="preview-mock">
@@ -303,7 +289,7 @@
     <section class="section">
       <div class="section-tag">What Makes This Different</div>
       <h2>Proof, Not Promises</h2>
-      <p class="lead">Most agents claim they negotiated. Ours shows you, live.</p>
+      <p class="lead">Most agents claim they negotiated. Ours is built to show you.</p>
       <div class="diff-grid">
         <div class="diff-card">
           <div class="icon">⚡</div>
@@ -322,16 +308,11 @@
           <div><h4>Config, Not Code</h4><p>Swap one YAML file to retarget the entire system to a new market — zero agent code changes.</p></div>
         </div>
       </div>
-    </section>
 
-    <section class="section" id="proof">
-      <div class="section-tag">See It Live</div>
-      <h2>The Evidence</h2>
-      <p class="lead">Not a claim — a live trace of the negotiation, the honesty check, and the final verdict.</p>
-      <div class="proof-links">
-        <a href="https://damirxolnazarov.github.io/the-negotiator/web/ticker.html">⚡ Live Price Ticker</a>
-        <a href="https://damirxolnazarov.github.io/the-negotiator/web/honesty.html">🔍 Honesty Polygraph</a>
-        <a href="https://damirxolnazarov.github.io/the-negotiator/web/report.html">⚖ The Verdict</a>
+      <div class="note-box">
+        <strong>Note:</strong> our live demo isn't publicly tryable right now — we hit our ElevenLabs
+        API quota during final testing. The full agent orchestration, webhook tools, and negotiation
+        logic are all real, working code, visible directly in the repository below.
       </div>
     </section>
 
@@ -354,7 +335,6 @@
     Built for Hack-Nation × ElevenLabs — "The Negotiator" Challenge · July 2026
     <div class="foot-links">
       <a href="https://github.com/DamirXolnazarov/the-negotiator">GitHub</a>
-      <a href="https://damirxolnazarov.github.io/the-negotiator/web/report.html">Live Demo</a>
     </div>
   </footer>
 

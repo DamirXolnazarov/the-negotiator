@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JobSpec",
+  "type": "object",
+  "required": ["job_id", "vertical", "origin", "destination", "distance_miles", "move_date", "home_size", "confirmed_by_user"],
+  "properties": {
+    "job_id": { "type": "string" },
+    "vertical": { "type": "string", "enum": ["residential_moving"] },
+    "origin": {
+      "type": "object",
+      "required": ["city", "state"],
+      "properties": {
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "stairs": { "type": "boolean" },
+        "elevator": { "type": "boolean" },
+        "long_carry": { "type": "boolean" }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "required": ["city", "state"],
+      "properties": {
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "stairs": { "type": "boolean" },
+        "elevator": { "type": "boolean" },
+        "long_carry": { "type": "boolean" }
+      }
+    },
+    "distance_miles": { "type": "number" },
+    "move_date": { "type": "string" },
+    "date_flexible": { "type": "boolean" },
+    "home_size": { "type": "string" },
+    "large_items": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "packing_service_needed": { "type": "boolean" },
+    "special_notes": { "type": "string" },
+    "benchmark_price_range": {
+      "type": "object",
+      "properties": {
+        "low": { "type": "number" },
+        "high": { "type": "number" },
+        "source": { "type": "string" }
+      }
+    },
+    "confirmed_by_user": { "type": "boolean" },
+    "confirmed_at": { "type": "string" }
+  }
+}

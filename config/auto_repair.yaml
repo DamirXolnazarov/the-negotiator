@@ -1,0 +1,23 @@
+vertical: auto_repair
+
+job_spec_fields:
+  - vehicle_make_model_year
+  - issue_description
+  - location
+  - preferred_date
+  - parts_oem_or_aftermarket
+  - warranty_needed
+
+benchmark:
+  source: "RepairPal"
+  default_low: 300
+  default_high: 1200
+  note: "example: brake pad + rotor replacement, sedan"
+
+redflag:
+  below_market_pct: 30
+
+call_outcomes:
+  - itemized_quote
+  - callback_commitment
+  - documented_decline

@@ -1,0 +1,26 @@
+vertical: residential_moving
+
+job_spec_fields:
+  - origin
+  - destination
+  - distance_miles
+  - move_date
+  - date_flexible
+  - home_size
+  - large_items
+  - packing_service_needed
+  - special_notes
+
+benchmark:
+  source: "moveBuddha/FMCSA"
+  default_low: 1158
+  default_high: 6506
+  note: "Rock Hill SC to Charlotte NC, 45mi, standard 2BR service"
+
+redflag:
+  below_market_pct: 30
+
+call_outcomes:
+  - itemized_quote
+  - callback_commitment
+  - documented_decline

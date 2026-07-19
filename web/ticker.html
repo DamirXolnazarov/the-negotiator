@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Negotiator — Live Negotiation</title>
+<style>
+  :root {
+    --bg: #05070a; --card: #0f1420; --border: #1f2937;
+    --green: #22c55e; --red: #ef4444; --amber: #f59e0b;
+    --text: #e6edf3; --muted: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(ellipse at top, #0a0e17 0%, #05070a 100%);
+    color: var(--text);
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    min-height: 100vh;
+    padding: 3rem 2rem;
+  }
+  .header { text-align: center; margin-bottom: 3rem; }
+  .header h1 {
+    font-size: 1.8rem; letter-spacing: 0.05em;
+    background: linear-gradient(90deg, #22c55e, #06b6d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .header .pulse-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); margin-right: 8px; animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+  }
+  #ticker-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+  }
+  .call-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 1.5rem; position: relative; overflow: hidden;
+    transition: border-color 0.4s ease;
+  }
+  .call-card.moved { border-color: var(--green); box-shadow: 0 0 24px rgba(34,197,94,0.15); }
+  .company-name {
+    font-size: 0.85rem; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 0.5rem;
+  }
+  .price-display { font-size: 2.6rem; font-weight: 700; display: flex; align-items: baseline; gap: 0.6rem; }
+  .price-old { font-size: 1.3rem; color: var(--muted); text-decoration: line-through; }
+  .price-new { color: var(--green); }
+  .leverage-note {
+    margin-top: 0.8rem; padding: 0.6rem 0.9rem; background: rgba(34,197,94,0.08);
+    border-left: 3px solid var(--green); border-radius: 6px; font-size: 0.8rem; color: #86efac;
+  }
+  .savings-badge {
+    display: inline-block; margin-top: 0.6rem; padding: 0.25rem 0.7rem;
+    background: var(--green); color: #05070a; font-weight: 700; border-radius: 999px; font-size: 0.75rem;
+  }
+  .waiting { color: var(--muted); font-size: 0.9rem; font-style: italic; }
+</style>
+</head>
+<body>
+  <div class="header"><h1><span class="pulse-dot"></span>LIVE NEGOTIATION FEED</h1></div>
+  <div id="ticker-grid"></div>
+
+<script>
+const TOOL_SERVER_URL = "https://puzzle-thirsty-brick.ngrok-free.dev";
+
+async function poll() {
+  try {
+    const res = await fetch(`${TOOL_SERVER_URL}/tools/all_price_movements`);
+    const data = await res.json();
+    render(data.movements);
+  } catch (e) { console.error("poll failed", e); }
+  setTimeout(poll, 2000);
+}
+
+function render(movements) {
+  const grid = document.getElementById("ticker-grid");
+  grid.innerHTML = "";
+  if (!movements.length) {
+    grid.innerHTML = `<div class="waiting">Waiting for calls to begin...</div>`;
+    return;
+  }
+  movements.forEach(m => {
+    const initial = m.points.find(p => p.stage === "initial_quote");
+    const post = m.points.find(p => p.stage === "post_leverage_quote");
+    const companyName = m.file.split("_").slice(1, -1).join(" ") || m.file;
+
+    const card = document.createElement("div");
+    card.className = "call-card" + (post ? " moved" : "");
+
+    let priceHtml = `<span class="waiting">Awaiting first quote...</span>`;
+    if (initial && !post) {
+      priceHtml = `<span>$${initial.amount.toLocaleString()}</span>`;
+    } else if (initial && post) {
+      const saved = initial.amount - post.amount;
+      const pct = ((saved / initial.amount) * 100).toFixed(1);
+      priceHtml = `
+        <span class="price-old">$${initial.amount.toLocaleString()}</span>
+        <span class="price-new">$${post.amount.toLocaleString()}</span>
+      `;
+      priceHtml += `<br><span class="savings-badge">↓ Saved $${saved.toLocaleString()} (${pct}%)</span>`;
+    }
+
+    card.innerHTML = `
+      <div class="company-name">${companyName}</div>
+      <div class="price-display">${priceHtml}</div>
+      ${post ? `<div class="leverage-note">⚡ ${post.note || "Leverage applied"}</div>` : ""}
+    `;
+    grid.appendChild(card);
+  });
+}
+poll();
+</script>
+</body>
+</html>
